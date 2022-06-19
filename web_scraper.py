@@ -9,7 +9,7 @@ import re
 
 
 def open_allrecipes():
-    recipe_search = input("enter recipe you would like to make")
+    recipe_search = "chocolate chip cookies" #input("enter recipe you would like to make")
     recipe_search_updated = "https://www.allrecipes.com/search/results/?search=" + recipe_search.replace(" ", "+")
     f = urllib.request.urlopen(recipe_search_updated)
     data = f.read().decode()
@@ -19,20 +19,23 @@ def open_allrecipes():
 
 def open_recipe_from_search_page(data):
     search_for_string = 'class="card__titleLink manual-link-behavior elementFont__title margin-8-bottom"'
-    the_url_should_be_in_here = re.compile("search_for_string\n.*\nhref=(.*)\n", re.DOTALL)
+    the_url_should_be_in_here = re.compile(r'<a class="card__titleLink manual-link-behavior elementFont__titleLink margin-8-bottom"\n\s*.*\n\s*href=(.*)\n[^>]*')
+   # the_url_should_be_in_here = re.compile(r'.*\n.*\n.*"https://www.allrecipes.com/recipe/25040/chocolate-chip-cookies-v/"\n.*')
     return re.findall(the_url_should_be_in_here, data)
 
 
-def collect_ingredients(recipe_webpage):
+def collect_ingredients_and_instructions(recipe_webpage):
     f = urllib.request.urlopen(recipe_webpage)
     data = f.read().decode()
-    ingredient_finder = re.compile('(recipeIngredient.*],)', re.DOTALL)
+    ingredient_finder = re.compile('(recipeIngredient.*],)\n', re.DOTALL)
     m = re.search(ingredient_finder, data)
-    ingredient_array = m.groups()
+    recipe = m.groups()
+    recipe_divided = recipe[0].split("recipeInstruction")
+    ingredient_array = recipe_divided[0]
     return ingredient_array
 
 
 webpage = open_allrecipes()
 #
 print(open_recipe_from_search_page(webpage))
-print(collect_ingredients("https://www.allrecipes.com/recipe/25040/chocolate-chip-cookies-v/"))
+# print(collect_ingredients_and_instructions("https://www.allrecipes.com/recipe/25040/chocolate-chip-cookies-v/"))
