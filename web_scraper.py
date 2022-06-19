@@ -19,8 +19,8 @@ def open_allrecipes():
 
 def open_recipe_from_search_page(data):
     search_for_string = 'class="card__titleLink manual-link-behavior elementFont__title margin-8-bottom"'
-    the_url_should_be_in_here = re.compile(r'<a class="card__titleLink manual-link-behavior elementFont__titleLink margin-8-bottom"\n\s*.*\n\s*href=(.*)\n[^>]*')
-   # the_url_should_be_in_here = re.compile(r'.*\n.*\n.*"https://www.allrecipes.com/recipe/25040/chocolate-chip-cookies-v/"\n.*')
+    the_url_should_be_in_here = re.compile(r'<a class="card__titleLink manual-link-behavior elementFont__titleLink '
+                                           r'margin-8-bottom"\n\s*.*\n\s*href=(.*)\n[^>]*')
     return re.findall(the_url_should_be_in_here, data)
 
 
@@ -31,9 +31,17 @@ def collect_ingredients_and_instructions(recipe_webpage):
     m = re.search(ingredient_finder, data)
     recipe = m.groups()
     recipe_divided = recipe[0].split("recipeInstruction")
+    # but maybe we should keep it because we may need it later, and it's a rather small file anyway
     ingredient_array = recipe_divided[0]
     return ingredient_array
 
+
+def look_for_matching_recipe():
+    recipe_search = open_allrecipes()
+    recipe_results = open_recipe_from_search_page(recipe_search)
+    for recipe in recipe_results():
+        ingredients = collect_ingredients_and_instructions(recipe)
+        # do the matching thing on the ingredients half to the
 
 webpage = open_allrecipes()
 #
