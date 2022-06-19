@@ -1,0 +1,22 @@
+xl spreadsheet with ingredients and amounts in pantry
+dictionary of conversions- one bag of flour = x number of cups, etc
+but not if we stop caring about amounts because us rich americans always have excessive amounts
+maybe, but probably not: store information in a dictionary called pantry, in which ingredients are defined by amount
+method to update pantry after making a recipe
+find recipe:
+enter recipe you want to make
+web scraper builds url (allrecipes.com/search=thing+i+am+searching) so input thing ex "chocolate chip cookies"
+optional: enter how much time you have or how many servings you want
+and program scrapes webpage allrecipes.com/search=chocolate+chip+cookies
+click on each link and find the ingredients list.
+compare ingredients to what is in pantry and amounts (if we get around to it, also match the time/servings)
+if it's a match, store its information in something (recipe object? dictionary?)
+margarine and butter are considered equal.
+generate pdf of the first two matches each as a separate pdf, so you can pick which one.
+If no matches found, suggest closest match. so store also a recipe called "closest" and
+update it as you find a recipe that is a closer match. tell user what ingredients they need to acquire
+maybe skip the amounts - the more I think about it, the more complicated it gets. I would need a huge dictionary
+defining all possible conversions. To be fair someone definitely made one already but implementing would still be a pain
+I'd rather focus on ingredient matching unfortunately I'm not making some brilliant machine learning project, so we'll
+stick to common names for ingredients, not all possible names. we'll deal with separated eggs, different names for
+powdered sugar, ignore types of flour because you can substitute, and equate butter and margarine
