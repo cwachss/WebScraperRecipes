@@ -6,6 +6,10 @@
 
 import urllib.request
 import re
+import ast
+import pantry_processor
+
+pantry = pantry_processor.read_pantry('Pantry.xlsx', 'Pantry1')
 
 
 def open_allrecipes():
@@ -48,7 +52,22 @@ def look_for_matching_recipe():
         recipe_minus_extra_quotes = recipe.replace('"', '')
         # save current link! associated with the recipe and it's instructions!
         ingredients = collect_ingredients_and_instructions(recipe_minus_extra_quotes)
-        print(ingredients)
+        just_the_array_but_in_an_unnecessary_tuple = ast.literal_eval(ingredients.strip('recipeIngredient": '))
+        ingredients_array = just_the_array_but_in_an_unnecessary_tuple[0]
+
+        present = True
+        for ingredient in ingredients_array:
+            # i want to parse the string without breaking it up. maybe there is a substring method?
+            words = ingredient.split
+            # for word in words:
+            #     for item in pantry:
+            #         if word == item:
+            #             break
+            #         else:
+            #             present = False
+
+        # only run on first recipe, for testing purposes
+        break
         # do the matching thing on the ingredients half to the
 
 
