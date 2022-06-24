@@ -23,7 +23,7 @@ ingredient_substitutes = {
 
 
 def open_allrecipes():
-    recipe_search = input("enter recipe you would like to make")
+    recipe_search = input("enter recipe you would like to make: ")
     recipe_search_updated = "https://www.allrecipes.com/search/results/?search=" + recipe_search.replace(" ", "+")
     f = urllib.request.urlopen(recipe_search_updated)
     data = f.read().decode()
@@ -83,8 +83,6 @@ def look_for_matching_recipe():
                 not_present.append(ingredient)
         # print(not_present)
         not_present_count.append(not_present)
-        # only run on first recipe, for testing purposes
-        # left to do: get access to the link again, return recipe link
 
         # do the matching thing on the ingredients half to the
     least_missing = 0
@@ -94,7 +92,3 @@ def look_for_matching_recipe():
 
     print(recipe_results[i])
 
-
-#
-look_for_matching_recipe()
-# print(collect_ingredients_and_instructions("https://www.allrecipes.com/recipe/25040/chocolate-chip-cookies-v/"))
