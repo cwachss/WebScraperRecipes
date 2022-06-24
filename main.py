@@ -5,3 +5,4 @@
 import pantry_processor
 import web_scraper
 
+web_scraper.look_for_matching_recipe()
