@@ -11,9 +11,19 @@ import pantry_processor
 
 pantry = pantry_processor.read_pantry('Pantry.xlsx', 'Pantry1')
 
+ingredient_substitutes = {
+    # unfortunately, common substitutions like this dictionary are beyond the scope of my time. but maybe one day.
+    "butter": "margarine",
+    "vanilla sugar": "vanilla extract",
+    "almond milk": "milk",
+    "chocolate chunks": "chocolate chips",
+    "confectioner's sugar": "powdered sugar",
+    "icing sugar": "powdered sugar"
+}
+
 
 def open_allrecipes():
-    recipe_search = "chocolate chip cookies"  # input("enter recipe you would like to make")
+    recipe_search = input("enter recipe you would like to make")
     recipe_search_updated = "https://www.allrecipes.com/search/results/?search=" + recipe_search.replace(" ", "+")
     f = urllib.request.urlopen(recipe_search_updated)
     data = f.read().decode()
@@ -40,38 +50,51 @@ def collect_ingredients_and_instructions(recipe_webpage):
     # but maybe we should keep it because we may need it later, and it's a rather small file anyway
     # we should definitely keep it. We'll deal with that later though - maybe a separate method
     # called divide to temporarily divide it for the checker portion?
-    ingredient_array = recipe_divided[0]
+    # ingredient_array = recipe_divided[0]
 
-    return ingredient_array
+    return recipe_divided
 
 
 def look_for_matching_recipe():
     recipe_search = open_allrecipes()
     recipe_results = open_recipe_from_search_page(recipe_search)
+    # print(len(recipe_results))
+
+    not_present_count = []
     for recipe in recipe_results:
         recipe_minus_extra_quotes = recipe.replace('"', '')
-        # save current link! associated with the recipe and it's instructions!
-        ingredients = collect_ingredients_and_instructions(recipe_minus_extra_quotes)
+
+        full_recipe = collect_ingredients_and_instructions(recipe_minus_extra_quotes)
+        ingredients = full_recipe[0]
         just_the_array_but_in_an_unnecessary_tuple = ast.literal_eval(ingredients.strip('recipeIngredient": '))
         ingredients_array = just_the_array_but_in_an_unnecessary_tuple[0]
 
-        present = True
+        not_present = []
         for ingredient in ingredients_array:
-            # i want to parse the string without breaking it up. maybe there is a substring method?
-            words = ingredient.split
-            # for word in words:
-            #     for item in pantry:
-            #         if word == item:
-            #             break
-            #         else:
-            #             present = False
-
+            present = True
+            for my_ingredient in pantry:
+                if my_ingredient in ingredient:
+                    # print(f"{ingredient} is in pantry")
+                    present = True
+                    break
+                else:
+                    present = False
+            if not present:
+                not_present.append(ingredient)
+        # print(not_present)
+        not_present_count.append(not_present)
         # only run on first recipe, for testing purposes
-        break
+        # left to do: get access to the link again, return recipe link
+
         # do the matching thing on the ingredients half to the
+    least_missing = 0
+    for i in range(0, len(not_present_count)):
+        if len(not_present_count[i]) < len(not_present_count[least_missing]):
+            least_missing = i
+
+    print(recipe_results[i])
 
 
-webpage = open_allrecipes()
 #
 look_for_matching_recipe()
 # print(collect_ingredients_and_instructions("https://www.allrecipes.com/recipe/25040/chocolate-chip-cookies-v/"))
