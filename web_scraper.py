@@ -90,5 +90,5 @@ def look_for_matching_recipe():
         if len(not_present_count[i]) < len(not_present_count[least_missing]):
             least_missing = i
 
-    print(recipe_results[i])
+    print(recipe_results[i], not_present_count[i])
 
